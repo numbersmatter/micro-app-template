@@ -1,4 +1,4 @@
-import { organizationDb } from "../firebase/db/organization/crud.server";
+import { organizationDb } from "../firebase/firestore/organization/crud.server";
 
 export const db = {
   organizations: organizationDb,
