@@ -1,5 +1,5 @@
-import { organizationDb } from "../firebase/firestore/organization/crud.server";
+import { testCollectionDb } from "../firebase/firestore/TestCollection/crud.server";
 
 export const db = {
-  organizations: organizationDb,
+  organizations: testCollectionDb,
 };

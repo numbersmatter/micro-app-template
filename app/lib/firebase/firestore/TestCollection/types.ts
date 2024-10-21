@@ -1,6 +1,6 @@
 import { Timestamp } from "firebase-admin/firestore";
 
-export type OrganizationApp = {
+export type TestDocApp = {
   id: string;
   name: string;
   description: string;
@@ -8,14 +8,14 @@ export type OrganizationApp = {
   updatedDate: Date;
 };
 
-export type OrganizationDb = {
+export type TestDocDbModel = {
   name: string;
   description: string;
   createdDate: Timestamp;
   updatedDate: Timestamp;
 };
 
-export type OrganizationCreate = {
+export type TestDocCreate = {
   name: string;
   description: string;
 };
