@@ -3,7 +3,7 @@ import { redirect } from "@remix-run/node";
 import { UserRecord, getAuth } from "firebase-admin/auth";
 import * as firebaseRest from "./firebase-rest";
 
-import { destroySession, getSession } from "./sessions";
+// import { destroySession, getSession } from "../../auth/sessions.server";
 import { getRestConfig, initFirebase } from "../firebase.server";
 
 export type UserStatus = {
@@ -18,6 +18,11 @@ const getServerAuth = () => {
 };
 
 const serverAuth = getServerAuth();
+
+export const getFirebaseUser = async (uid: string) => {
+  const user = await serverAuth.getUser(uid);
+  return user;
+};
 // const signInWithPassword = firebaseAuthConfig.signInWithPassword;
 
 const signInWithPassword = async (email: string, password: string) => {
@@ -48,25 +53,25 @@ export const checkSessionCookie = async (session: Session) => {
   }
 };
 
-export const requireAuth = async (request: Request): Promise<UserRecord> => {
-  const session = await getSession(request.headers.get("cookie"));
-  const { uid } = await checkSessionCookie(session);
-  if (!uid) {
-    throw redirect("/login", {
-      headers: { "Set-Cookie": await destroySession(session) },
-    });
-  }
-  return serverAuth.getUser(uid);
-};
+// export const requireAuth = async (request: Request): Promise<UserRecord> => {
+//   const session = await getSession(request.headers.get("cookie"));
+//   const { uid } = await checkSessionCookie(session);
+//   if (!uid) {
+//     throw redirect("/login", {
+//       headers: { "Set-Cookie": await destroySession(session) },
+//     });
+//   }
+//   return serverAuth.getUser(uid);
+// };
 
-export const checkAuth = async (request: Request) => {
-  const session = await getSession(request.headers.get("cookie"));
-  const { uid } = await checkSessionCookie(session);
-  if (!uid) {
-    return { status: "loggedout" };
-  }
-  return { status: "loggedin" };
-};
+// export const checkAuth = async (request: Request) => {
+//   const session = await getSession(request.headers.get("cookie"));
+//   const { uid } = await checkSessionCookie(session);
+//   if (!uid) {
+//     return { status: "loggedout" };
+//   }
+//   return { status: "loggedin" };
+// };
 
 export const signIn = async (email: string, password: string) => {
   const { idToken } = await signInWithPassword(email, password);

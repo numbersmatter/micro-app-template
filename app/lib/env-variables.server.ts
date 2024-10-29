@@ -1,7 +1,10 @@
 import { z } from "zod";
 const envSchema = z.object({
+  NODE_ENV: z.enum(["development", "production"]),
   FIREBASE_API_KEY: z.string(),
   COOKIE_SECRET: z.string(),
+  SIGN_IN_PATH: z.string(),
+  SIGN_UP_PATH: z.string(),
 });
 
 export const initEnvVariables = () => {
