@@ -1,5 +1,6 @@
+import { LoaderFunctionArgs } from "@remix-run/node";
 
-export const handleAuth = async (request: Request) => {
+export const handleAuth = async (args: LoaderFunctionArgs) => {
 
 
 };
