@@ -11,17 +11,15 @@ const readFirestoreConverter: FirestoreDataConverter<m.TestDocApp> = {
   toFirestore: (doc: m.TestDocApp) => {
     return {
       id: doc.id,
+      test_text: doc.test_text,
       name: doc.name,
-      description: doc.description,
     };
   },
   fromFirestore: (snapshot: QueryDocumentSnapshot<m.TestDocDbModel>) => {
     return {
       id: snapshot.id,
+      test_text: snapshot.data().test_text,
       name: snapshot.data().name,
-      description: snapshot.data().description,
-      createdDate: snapshot.data().createdDate.toDate(),
-      updatedDate: snapshot.data().updatedDate.toDate(),
     };
   },
 };
@@ -29,7 +27,7 @@ const readFirestoreConverter: FirestoreDataConverter<m.TestDocApp> = {
 export const testCollectionDb = () => {
   // For reads
   const collectionRead = firestoreDb()
-    .collection(`/organizations`)
+    .collection(`/test`)
     .withConverter(readFirestoreConverter);
 
   const collectionWrite = firestoreDb().collection(`/test`);
