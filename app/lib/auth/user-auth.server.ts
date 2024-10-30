@@ -1,9 +1,4 @@
-import {
-  LoaderFunctionArgs,
-  redirect,
-  Session,
-  SessionData,
-} from "@remix-run/node";
+import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { destroySession, getSession } from "./sessions.server";
 import {
   checkSessionCookie,
@@ -25,17 +20,13 @@ const checkAuth = async (args: LoaderFunctionArgs) => {
   return { authenticated: true };
 };
 
-const redirectToLogin = async (session: Session<SessionData, SessionData>) => {
-  throw redirect(SIGN_IN_PATH, {
-    headers: { "Set-Cookie": await destroySession(session) },
-  });
-};
-
 const requireAuth = async (args: LoaderFunctionArgs) => {
   const session = await getSession(args.request.headers.get("cookie"));
   const { uid } = await checkSessionCookie(session);
   if (!uid) {
-    throw redirectToLogin(session);
+    throw redirect(SIGN_IN_PATH, {
+      headers: { "Set-Cookie": await destroySession(session) },
+    });
   }
 
   const user = await getFirebaseUser(uid);
@@ -45,3 +36,5 @@ const requireAuth = async (args: LoaderFunctionArgs) => {
     user,
   };
 };
+
+export { checkAuth, requireAuth };

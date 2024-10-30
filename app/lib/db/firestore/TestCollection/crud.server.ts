@@ -2,11 +2,10 @@ import {
   DocumentData,
   FieldValue,
   FirestoreDataConverter,
-  getFirestore,
   QueryDocumentSnapshot,
 } from "firebase-admin/firestore";
 import * as m from "./types";
-import { initFirebase } from "../../firebase.server";
+import { firestoreDb } from "~/lib/firebase/firestore.server";
 
 const readFirestoreConverter: FirestoreDataConverter<m.TestDocApp> = {
   toFirestore: (doc: m.TestDocApp) => {
@@ -28,15 +27,12 @@ const readFirestoreConverter: FirestoreDataConverter<m.TestDocApp> = {
 };
 
 export const testCollectionDb = () => {
-  const fireApp = initFirebase();
-  const firestore = getFirestore(fireApp);
-
   // For reads
-  const collectionRead = firestore
+  const collectionRead = firestoreDb()
     .collection(`/organizations`)
     .withConverter(readFirestoreConverter);
 
-  const collectionWrite = firestore.collection(`/test`);
+  const collectionWrite = firestoreDb().collection(`/test`);
 
   const create = async (data: m.TestDocDbModel) => {
     const docRef = collectionWrite.doc();

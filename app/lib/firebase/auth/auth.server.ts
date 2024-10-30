@@ -25,7 +25,13 @@ export const getFirebaseUser = async (uid: string) => {
 };
 // const signInWithPassword = firebaseAuthConfig.signInWithPassword;
 
-const signInWithPassword = async (email: string, password: string) => {
+export const signInWithEmailAndPassword = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
   const signInResponse = await firebaseRest.signInWithPassword(
     {
       email,
@@ -73,10 +79,10 @@ export const checkSessionCookie = async (session: Session) => {
 //   return { status: "loggedin" };
 // };
 
-export const signIn = async (email: string, password: string) => {
-  const { idToken } = await signInWithPassword(email, password);
-  return signInWithToken(idToken);
-};
+// export const signIn = async (email: string, password: string) => {
+//   const { idToken } = await signInWithPassword(email, password);
+//   return signInWithToken(idToken);
+// };
 
 export const signInWithToken = async (idToken: string) => {
   const expiresIn = 1000 * 60 * 60 * 24 * 7; // 1 week
@@ -86,11 +92,11 @@ export const signInWithToken = async (idToken: string) => {
   return sessionCookie;
 };
 
-export const signUp = async (name: string, email: string, password: string) => {
-  await serverAuth.createUser({
-    email,
-    password,
-    displayName: name,
-  });
-  return await signIn(email, password);
-};
+// export const signUp = async (name: string, email: string, password: string) => {
+//   await serverAuth.createUser({
+//     email,
+//     password,
+//     displayName: name,
+//   });
+//   return await signIn(email, password);
+// };
